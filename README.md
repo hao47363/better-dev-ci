@@ -48,6 +48,7 @@ lefthook install
 - Settings -> Actions -> General:
   - Allow GitHub Actions
   - Workflow permissions: Read and write (required for `pr-automation.yml`)
+  - Allow GitHub Actions to create and approve pull requests
 
 ## Included workflows
 
