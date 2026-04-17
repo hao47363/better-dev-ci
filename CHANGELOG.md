@@ -17,3 +17,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 ### Security
+
+## [0.1.0] - 2026-04-17
+
+### Added
+
+- Added `docs/README.md` as a centralized documentation index with task-based navigation.
+- Added governance documentation set under `docs/governance/`:
+  - `naming-conventions.md`
+  - `linting-strategy.md`
+  - `changelog-guidelines.md`
+  - `code-quality-playbook.md`
+  - `release-versioning.md`
+  - `community-best-practices-report.md`
+- Added structured docs for operations/reference:
+  - `docs/operations/ci-devx-flow.md`
+  - `docs/reference/configuration-reference.md`
+- Added code quality and review guidance (mandatory vs recommended rules, review checklist, exceptions policy).
+- Added release/tagging policy for SemVer-based `vMAJOR.MINOR.PATCH` releases.
+- Added community-backed best-practice report based on Stack Overflow and Reddit references.
+
+### Changed
+
+- Updated `README.md` documentation links to reflect the new folder-based documentation architecture.
+- Expanded naming conventions to include variable naming defaults (`camelCase`) and constant naming (`UPPER_SNAKE_CASE`), with JS/TS declaration guidance (`const`/`let`, no `var`).
+- Reorganized docs to keep repository root clean and move policy/process docs into dedicated subfolders.
+
+### Removed
+
+- Removed legacy flat docs files from `docs/` after migration to structured folders:
+  - `docs/naming-conventions.md`
+  - `docs/linting-strategy.md`
+  - `docs/changelog-guidelines.md`
+  - `docs/ci-devx-flow.md`
+  - `docs/configuration-reference.md`
