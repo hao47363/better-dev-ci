@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: pr-intelligence-${{ github.event.pull_request.number }}
@@ -40,3 +41,41 @@ jobs:
           name: pr-report-pr-${{ github.event.pull_request.number }}
           path: pr-report.md
           if-no-files-found: error
+
+      - name: Upsert PR report comment
+        uses: actions/github-script@v7
+        env:
+          REPORT_PATH: pr-report.md
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- pr-intelligence-report -->';
+            const report = fs.readFileSync(process.env.REPORT_PATH, 'utf8');
+            const body = `${marker}\n## PR Intelligence Report\n\n${report}`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number, per_page: 100 }
+            );
+
+            const existing = comments.find(
+              (c) => c.user?.type === 'Bot' && c.body?.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body
+              });
+            }
