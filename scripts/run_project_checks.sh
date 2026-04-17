@@ -17,10 +17,72 @@ read_cfg() {
   sh ./scripts/get_config_value.sh "$key" "$default_value"
 }
 
-install_cmd="$(read_cfg "commands.install" "")"
-lint_cmd="$(read_cfg "commands.lint" "")"
-test_cmd="$(read_cfg "commands.test" "")"
-build_cmd="$(read_cfg "commands.build" "")"
+stack="$(read_cfg "project.stack" "")"
+if [ -z "$stack" ]; then
+  stack="$(read_cfg "stack" "custom")"
+fi
+
+default_command_for_stack() {
+  stack_name="$1"
+  command_type="$2"
+  case "$stack_name" in
+    nextjs|js)
+      case "$command_type" in
+        install) echo "npm ci" ;;
+        lint) echo "npm run lint" ;;
+        test) echo "npm test" ;;
+        build) echo "npm run build" ;;
+        *) echo "" ;;
+      esac
+      ;;
+    laravel|php)
+      case "$command_type" in
+        install) echo "composer install" ;;
+        lint) echo "vendor/bin/pint --test" ;;
+        test) echo "php artisan test" ;;
+        build) echo "" ;;
+        *) echo "" ;;
+      esac
+      ;;
+    flutter)
+      case "$command_type" in
+        install) echo "flutter pub get" ;;
+        lint) echo "flutter analyze" ;;
+        test) echo "flutter test" ;;
+        build) echo "flutter build apk" ;;
+        *) echo "" ;;
+      esac
+      ;;
+    python)
+      case "$command_type" in
+        install) echo "pip install -r requirements.txt" ;;
+        lint) echo "ruff check ." ;;
+        test) echo "pytest -q" ;;
+        build) echo "" ;;
+        *) echo "" ;;
+      esac
+      ;;
+    *)
+      echo ""
+      ;;
+  esac
+}
+
+resolve_command() {
+  configured_cmd="$1"
+  stack_name="$2"
+  command_type="$3"
+  if [ -n "$configured_cmd" ]; then
+    echo "$configured_cmd"
+  else
+    default_command_for_stack "$stack_name" "$command_type"
+  fi
+}
+
+install_cmd="$(resolve_command "$(read_cfg "commands.install" "")" "$stack" "install")"
+lint_cmd="$(resolve_command "$(read_cfg "commands.lint" "")" "$stack" "lint")"
+test_cmd="$(resolve_command "$(read_cfg "commands.test" "")" "$stack" "test")"
+build_cmd="$(resolve_command "$(read_cfg "commands.build" "")" "$stack" "build")"
 run_lint="$(read_cfg "ci.run_lint" "true")"
 run_test="$(read_cfg "ci.run_test" "true")"
 run_build="$(read_cfg "ci.run_build" "false")"

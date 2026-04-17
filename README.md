@@ -22,7 +22,9 @@ Reusable GitHub starter template for any language/runtime with:
 ## Quick start
 
 1. Create a new repository from this template in GitHub.
-2. Update `.template/repo-settings.yml` with your stack and commands.
+2. Update `.template/repo-settings.yml` and set `project.stack`:
+   - `nextjs`, `laravel`, `flutter`, or `python` to use built-in default commands
+   - `custom` to provide manual `commands.*` values
 3. Install Lefthook and run:
 
 ```bash
@@ -34,8 +36,8 @@ lefthook install
 ## What to customize per project
 
 - `.template/repo-settings.yml` (primary centralized config):
-  - `stack` (`js`, `php`, `flutter`, `custom`)
-  - install/lint/test/build commands
+  - `project.stack` (`nextjs`, `laravel`, `flutter`, `python`, `custom`)
+  - optional install/lint/test/build command overrides (required only for `custom`)
   - `ci` toggles for lint/test/build jobs
   - optional `cache` settings for dependency cache path/key
   - governance and automation settings (branch/commit/PR/stale)

@@ -13,31 +13,32 @@ When both files define the same key, `.template/repo-settings.yml` takes precede
 
 - Required: no
 - Default: `custom`
-- Description: Informational stack identifier for your project.
+- Description: Stack selector used to determine default commands when `commands.*` are empty.
+- Supported values: `nextjs`, `laravel`, `flutter`, `python`, `custom` (aliases `js` -> `nextjs`, `php` -> `laravel` are also supported).
 
 ### `commands.install`
 
 - Required: no
-- Default: `""`
-- Description: Dependency installation command run in CI/local checks.
+- Default: Stack preset command for `nextjs`/`laravel`/`flutter`/`python`, otherwise `""` for `custom`.
+- Description: Dependency installation command run in CI/local checks. Overrides stack default when set.
 
 ### `commands.lint`
 
 - Required: no
-- Default: `""`
-- Description: Lint command for your selected stack.
+- Default: Stack preset command for `nextjs`/`laravel`/`flutter`/`python`, otherwise `""` for `custom`.
+- Description: Lint command for your selected stack. Overrides stack default when set.
 
 ### `commands.test`
 
 - Required: no
-- Default: `""`
-- Description: Test command for your selected stack.
+- Default: Stack preset command for `nextjs`/`laravel`/`flutter`/`python`, otherwise `""` for `custom`.
+- Description: Test command for your selected stack. Overrides stack default when set.
 
 ### `commands.build`
 
 - Required: no
-- Default: `""`
-- Description: Build command for your selected stack.
+- Default: Stack preset command for `nextjs`/`laravel`/`flutter`/`python` (where available), otherwise `""` for `custom`.
+- Description: Build command for your selected stack. Overrides stack default when set.
 
 ### `ci.run_lint`
 

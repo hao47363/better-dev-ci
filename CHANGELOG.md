@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Replaced Reddit-based references in `docs/governance/community-best-practices-report.md` with Stack Overflow and engineering-reference sources.
 - Updated `README.md` wording for `docs/governance/community-best-practices-report.md` to use source-neutral phrasing.
+- Added stack-based command presets so `project.stack` values (`nextjs`, `laravel`, `flutter`, `python`) resolve default install/lint/test/build commands when `commands.*` are empty.
+- Updated template and reference docs to clarify that only `custom` requires manual `commands.*` configuration.
 
 ### Deprecated
 

@@ -2,6 +2,12 @@
 # Prefer using `.template/repo-settings.yml` as the single source of truth.
 # This file is still read for backward compatibility.
 
+# Supported values:
+# - nextjs (alias: js)
+# - laravel (alias: php)
+# - flutter
+# - python
+# - custom (manual commands)
 stack: custom
 
 # Stack presets (pick one and customize):

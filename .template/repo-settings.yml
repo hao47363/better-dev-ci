@@ -4,20 +4,34 @@
 project:
   # Required: no
   # Default: custom
+  # Supported values:
+  # - nextjs (alias: js)
+  # - laravel (alias: php)
+  # - flutter
+  # - python
+  # - custom (manual commands)
   stack: custom
 
 commands:
   # Required: no
-  # Default: ""
+  # Default:
+  # - stack preset command for nextjs/laravel/flutter/python
+  # - "" for custom
   install: ""
   # Required: no
-  # Default: ""
+  # Default:
+  # - stack preset command for nextjs/laravel/flutter/python
+  # - "" for custom
   lint: ""
   # Required: no
-  # Default: ""
+  # Default:
+  # - stack preset command for nextjs/laravel/flutter/python
+  # - "" for custom
   test: ""
   # Required: no
-  # Default: ""
+  # Default:
+  # - stack preset command for nextjs/laravel/flutter/python
+  # - "" for custom
   build: ""
 
 ci:
