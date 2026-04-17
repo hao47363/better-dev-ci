@@ -33,6 +33,32 @@ References:
 - [Martin Fowler: Avoiding Repetition](https://www.martinfowler.com/ieeeSoftware/repetition.pdf)
 - [Stack Overflow: Is violation of DRY always bad?](https://stackoverflow.com/questions/17788738/is-violation-of-dry-principle-always-bad)
 
+## Atomic component folder structure
+
+For component-heavy frontend projects, use a predictable layered component structure to keep reuse and ownership clear.
+
+- Organize shared UI by layer: `atoms`, `molecules`, `organisms`, `templates`, `pages`.
+- Keep smallest reusable primitives in `atoms` (button, input, icon), then compose upward.
+- Use folder-per-component for local cohesion (component, styles, types, tests close together).
+- Keep domain-specific components inside feature/domain folders; keep only truly reusable UI in shared atomic layers.
+- Avoid deep cross-layer imports; expose stable public entry points (for example `index.ts`) where helpful.
+
+Example:
+
+```text
+src/components/
+  atoms/
+  molecules/
+  organisms/
+  templates/
+  pages/
+```
+
+References:
+
+- [Atomic Design by Brad Frost](https://bradfrost.com/blog/post/atomic-web-design/)
+- [Atomic Design methodology](https://atomicdesign.bradfrost.com/chapter-2/%E3%80%80)
+
 ## Review Checklist
 
 - Correctness: does behavior match the requirement?

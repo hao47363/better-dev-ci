@@ -8,7 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- Added DRY principle guidance to `docs/governance/code-quality-playbook.md` with practical application notes and references.
+- Added atomic component folder structure guidance (`atoms`/`molecules`/`organisms`/`templates`/`pages`) to `docs/governance/code-quality-playbook.md`.
+
 ### Changed
+
+- Replaced Reddit-based references in `docs/governance/community-best-practices-report.md` with Stack Overflow and engineering-reference sources.
+- Updated `README.md` wording for `docs/governance/community-best-practices-report.md` to use source-neutral phrasing.
 
 ### Deprecated
 

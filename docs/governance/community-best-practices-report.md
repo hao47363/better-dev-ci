@@ -1,6 +1,6 @@
 # Community Best Practices Report
 
-This report summarizes practical conventions commonly supported in developer communities, then maps them to this template.
+This report summarizes practical conventions commonly supported in engineering references and developer communities, then maps them to this template.
 
 ## Sources consulted
 
@@ -9,12 +9,10 @@ This report summarizes practical conventions commonly supported in developer com
   - [Picking good identifier names](https://stackoverflow.com/questions/841888/picking-good-identifier-names)
   - [What is readable code? What are the best practices to follow while naming variables?](https://stackoverflow.com/questions/454178/what-is-readable-code-what-are-the-best-practices-to-follow-while-naming-variab)
   - [What is the naming convention in Python for variables and functions?](https://stackoverflow.com/questions/159720/what-is-the-naming-convention-in-python-for-variables-and-functions)
-- Reddit:
-  - [Why I Have Given Up on Coding Standards](https://www.reddit.com/r/programming/comments/13kis7/why_i_have_given_up_on_coding_standards/)
-  - [Clean Code Cheat Sheet](https://www.reddit.com/r/programming/comments/1fsvy3/clean_code_cheat_sheet/)
-  - [\"Clean\" Code, Horrible Performance](https://www.reddit.com/r/programming/comments/16mfnj0/clean_code_horrible_performance/)
-  - [How To Write a README?](https://www.reddit.com/r/learnprogramming/comments/vxfku6/how_to_write_a_readme/)
-  - [What should a github repo include?](https://www.reddit.com/r/learnprogramming/comments/8u8rrv/what_should_a_github_repo_include_what_is_the/)
+- Additional references:
+  - [Martin Fowler: Avoiding Repetition](https://www.martinfowler.com/ieeeSoftware/repetition.pdf)
+  - [Atomic Design by Brad Frost](https://bradfrost.com/blog/post/atomic-web-design/)
+  - [Atomic Design methodology (book site)](https://atomicdesign.bradfrost.com/chapter-2/%E3%80%80)
 
 ## Majority-supported conventions
 
@@ -24,6 +22,7 @@ This report summarizes practical conventions commonly supported in developer com
 - Prefer principles over rigid arbitrary limits (for example, avoid fixed class line-count rules).
 - Keep code review focused on correctness, risk, maintainability, and tests (not formatting nits).
 - Balance clean structure with performance needs; optimize with evidence where it matters.
+- Structure reusable UI components with clear boundaries (for example Atomic Design layers: atoms, molecules, organisms, templates, pages).
 
 ## Practical template rules to adopt
 
@@ -32,6 +31,7 @@ This report summarizes practical conventions commonly supported in developer com
 - Prefer immutable declarations where language supports it.
 - Keep PR scope small and logically focused.
 - Add release tags and changelog discipline for traceability.
+- For component-heavy frontends, keep a predictable folder hierarchy and ownership boundaries for reusable UI.
 
 ## What not to over-enforce
 

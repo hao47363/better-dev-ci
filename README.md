@@ -72,5 +72,5 @@ lefthook install
 - `docs/governance/changelog-guidelines.md` for Keep a Changelog + SemVer release rules
 - `docs/governance/release-versioning.md` for release tags and versioning policy
 - `docs/governance/code-quality-playbook.md` for mandatory/recommended quality rules and review checklist
-- `docs/governance/community-best-practices-report.md` for Stack Overflow/Reddit-informed recommendations
+- `docs/governance/community-best-practices-report.md` for external best-practice recommendations
 
