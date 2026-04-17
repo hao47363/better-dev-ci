@@ -6,22 +6,24 @@ cfg_file=".template/project-config.yml"
 mode="${1:-all}"
 target="${2:-}"
 
-if [ ! -f "$cfg_file" ]; then
-  echo "No $cfg_file found, skipping project checks."
+if [ ! -f ".template/repo-settings.yml" ] && [ ! -f "$cfg_file" ]; then
+  echo "No .template/repo-settings.yml or $cfg_file found, skipping project checks."
   exit 0
 fi
 
 read_cfg() {
-  sh ./scripts/read_project_config.sh "$1"
+  key="$1"
+  default_value="${2:-}"
+  sh ./scripts/get_config_value.sh "$key" "$default_value"
 }
 
-install_cmd="$(read_cfg "commands.install")"
-lint_cmd="$(read_cfg "commands.lint")"
-test_cmd="$(read_cfg "commands.test")"
-build_cmd="$(read_cfg "commands.build")"
-run_lint="$(read_cfg "ci.run_lint")"
-run_test="$(read_cfg "ci.run_test")"
-run_build="$(read_cfg "ci.run_build")"
+install_cmd="$(read_cfg "commands.install" "")"
+lint_cmd="$(read_cfg "commands.lint" "")"
+test_cmd="$(read_cfg "commands.test" "")"
+build_cmd="$(read_cfg "commands.build" "")"
+run_lint="$(read_cfg "ci.run_lint" "true")"
+run_test="$(read_cfg "ci.run_test" "true")"
+run_build="$(read_cfg "ci.run_build" "false")"
 
 run_if_set() {
   label="$1"

@@ -5,12 +5,12 @@ This template is designed to stay language-agnostic while improving feedback spe
 ## Prerequisites
 
 - `lefthook` is the only non-default tool required by this template for local hook checks.
-- Runtime/tooling for `install`, `lint`, `test`, `build` depends on the stack you choose in `.template/project-config.yml`.
+- Runtime/tooling for `install`, `lint`, `test`, `build` depends on the stack you choose in `.template/repo-settings.yml`.
 - Without Lefthook installed, CI still enforces branch/commit/PR rules in GitHub Actions.
 
 ## Flow overview
 
-1. `prepare` job reads `.template/project-config.yml` and determines:
+1. `prepare` job reads `.template/repo-settings.yml` (with legacy fallback) and determines:
    - whether to run lint/test/build (`ci.run_*`)
    - whether optional cache should be restored (`cache.*`)
    - whether heavy checks are needed (`docs-only` changes skip heavy jobs)
@@ -110,6 +110,7 @@ Set a meaningful `key` that includes OS and lockfile hash when possible.
 
 - `docs/naming-conventions.md`
 - `docs/linting-strategy.md`
+- `docs/configuration-reference.md`
 
 ## Recommended branch protection
 

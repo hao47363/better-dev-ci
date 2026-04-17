@@ -11,14 +11,16 @@ fi
 
 first_line="$(sed -n '1p' "$commit_msg_file" | tr -d '\r')"
 
-pattern='^(feat|fix|chore|docs|refactor|test|perf|ci|build|style|revert)\([a-z0-9][a-z0-9._-]*\): .+'
+conventional_types="$(sh ./scripts/get_config_value.sh governance.conventional_types "feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert")"
+types_pattern="$(printf '%s' "$conventional_types" | tr -d ' ' | tr ',' '|')"
+pattern="^(${types_pattern})\\([a-z0-9][a-z0-9._-]*\\): .+"
 
 if ! printf '%s' "$first_line" | grep -Eq "$pattern"; then
   echo "Invalid commit message format."
   echo "Expected: <type>(<scope>): <message>"
   echo "Example: feat(cart): implement add to cart option"
   echo
-  echo "Allowed types: feat, fix, chore, docs, refactor, test, perf, ci, build, style, revert"
+  echo "Allowed types: $conventional_types"
   echo "Scope rules: lowercase letters, numbers, dot, underscore, dash"
   exit 1
 fi

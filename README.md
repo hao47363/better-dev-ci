@@ -22,7 +22,7 @@ Reusable GitHub starter template for any language/runtime with:
 ## Quick start
 
 1. Create a new repository from this template in GitHub.
-2. Update `.template/project-config.yml` with your stack and commands.
+2. Update `.template/repo-settings.yml` with your stack and commands.
 3. Install Lefthook and run:
 
 ```bash
@@ -33,11 +33,13 @@ lefthook install
 
 ## What to customize per project
 
-- `.template/project-config.yml`:
+- `.template/repo-settings.yml` (primary centralized config):
   - `stack` (`js`, `php`, `flutter`, `custom`)
   - install/lint/test/build commands
   - `ci` toggles for lint/test/build jobs
   - optional `cache` settings for dependency cache path/key
+  - governance and automation settings (branch/commit/PR/stale)
+- `.template/project-config.yml` (optional legacy fallback for backward compatibility)
 - Branch protection rules in GitHub
 - Optional remove `pr-automation.yml` if you do not want auto-created PRs
 - Update `.github/CODEOWNERS` with your team/user
@@ -65,4 +67,5 @@ lefthook install
 - `docs/linting-strategy.md` for universal + language-specific linting rules
   - includes guidance for Next.js, Laravel, Flutter, and Python
 - `templates/lint/README.md` for copy-ready lint starter configs by stack
+- `docs/configuration-reference.md` for required/optional/default values of each setting
 

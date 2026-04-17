@@ -26,7 +26,7 @@ Use governance rules already in this template for:
 
 ## Layer 2: Language-specific linting
 
-Define lint commands in `.template/project-config.yml` so each project only runs applicable linters.
+Define lint commands in `.template/repo-settings.yml` so each project only runs applicable linters.
 
 ### Next.js (JavaScript/TypeScript)
 

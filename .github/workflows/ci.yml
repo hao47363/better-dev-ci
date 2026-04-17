@@ -3,19 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
-      - "feature/**"
-      - "feat/**"
-      - "fix/**"
-      - "chore/**"
-      - "docs/**"
-      - "refactor/**"
-      - "test/**"
-      - "perf/**"
-      - "ci/**"
-      - "build/**"
-      - "style/**"
-      - "revert/**"
+      - "**"
     paths-ignore:
       - "**/*.md"
       - "docs/**"
@@ -24,7 +12,7 @@ on:
       - ".github/pull_request_template.md"
   pull_request:
     branches:
-      - main
+      - "**"
     paths-ignore:
       - "**/*.md"
       - "docs/**"
@@ -66,10 +54,10 @@ jobs:
           run_lint="$(sh ./scripts/run_project_checks.sh enabled lint)"
           run_test="$(sh ./scripts/run_project_checks.sh enabled test)"
           run_build="$(sh ./scripts/run_project_checks.sh enabled build)"
-          cache_enabled="$(sh ./scripts/read_project_config.sh cache.enabled || true)"
-          cache_path="$(sh ./scripts/read_project_config.sh cache.path || true)"
-          cache_key="$(sh ./scripts/read_project_config.sh cache.key || true)"
-          cache_restore_keys="$(sh ./scripts/read_project_config.sh cache.restore_keys || true)"
+          cache_enabled="$(sh ./scripts/get_config_value.sh cache.enabled false || true)"
+          cache_path="$(sh ./scripts/get_config_value.sh cache.path "" || true)"
+          cache_key="$(sh ./scripts/get_config_value.sh cache.key "" || true)"
+          cache_restore_keys="$(sh ./scripts/get_config_value.sh cache.restore_keys "" || true)"
 
           echo "run_lint=${run_lint:-true}" >> "$GITHUB_OUTPUT"
           echo "run_test=${run_test:-true}" >> "$GITHUB_OUTPUT"
@@ -103,16 +91,21 @@ jobs:
           fetch-depth: 0
 
       - name: Validate branch name
-        if: ${{ github.event_name != 'push' || (github.ref_name != 'main' && github.ref_name != 'develop' && github.ref_name != 'staging' && github.ref_name != 'dev') }}
         env:
           BRANCH_NAME: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
         run: ./scripts/validate_branch_name.sh "$BRANCH_NAME"
 
       - name: Validate commit messages
-        if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'develop' && github.ref_name != 'staging' && github.ref_name != 'dev') }}
         shell: bash
         run: |
           set -euo pipefail
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            EXEMPT_BRANCHES="$(sh ./scripts/get_config_value.sh governance.exempt_branches "main,develop,staging,dev" | tr -d ' ')"
+            if [[ ",${EXEMPT_BRANCHES}," == *",${{ github.ref_name }},"* ]]; then
+              echo "Skipping commit validation on exempt branch: ${{ github.ref_name }}"
+              exit 0
+            fi
+          fi
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
           else

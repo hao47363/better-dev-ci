@@ -15,20 +15,22 @@ if [ -z "$branch_name" ]; then
   exit 1
 fi
 
-case "$branch_name" in
-  main|develop|staging|dev)
-    exit 0
-    ;;
-esac
+exempt_branches="$(sh ./scripts/get_config_value.sh governance.exempt_branches "main,develop,staging,dev")"
+branch_types="$(sh ./scripts/get_config_value.sh governance.branch_types "feature,feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert")"
 
-pattern='^(feature|feat|fix|chore|docs|refactor|test|perf|ci|build|style|revert)\/[a-z0-9][a-z0-9._-]*$'
+if printf ',%s,' "$exempt_branches" | tr -d ' ' | grep -q ",$branch_name,"; then
+  exit 0
+fi
+
+types_pattern="$(printf '%s' "$branch_types" | tr -d ' ' | tr ',' '|')"
+pattern="^(${types_pattern})\\/[a-z0-9][a-z0-9._-]*$"
 
 if ! printf '%s' "$branch_name" | grep -Eq "$pattern"; then
   echo "Invalid branch name: $branch_name"
   echo "Expected: <type>/<branch-name>"
   echo "Examples: feature/cart-add-item, fix/login-null-check, chore/update-readme"
   echo
-  echo "Allowed types: feature, feat, fix, chore, docs, refactor, test, perf, ci, build, style, revert"
+  echo "Allowed types: $branch_types"
   echo "Branch-name rules: lowercase letters, numbers, dot, underscore, dash"
   exit 1
 fi

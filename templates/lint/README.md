@@ -15,7 +15,7 @@ Copy only the stack you use. Do not combine all lint configs in one project.
   - Copy to project root as `eslint.config.mjs`
   - Install lint dependencies:
     - `npm i -D eslint @eslint/js globals typescript typescript-eslint`
-  - Set lint command in `.template/project-config.yml`:
+  - Set lint command in `.template/repo-settings.yml`:
     - `lint: "npm run lint"`
 
 - Laravel

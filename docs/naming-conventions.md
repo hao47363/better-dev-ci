@@ -63,7 +63,7 @@ chore/update-ci
   - branch validation
   - commit message validation
   - PR title validation
-  - optional stack checks from `.template/project-config.yml`
+  - optional stack checks from `.template/repo-settings.yml` (legacy fallback supported)
 
 ## PR titles
 

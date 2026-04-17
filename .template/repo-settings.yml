@@ -1,0 +1,80 @@
+# Centralized repository settings
+# Priority: this file overrides `.template/project-config.yml` when both define the same key.
+
+project:
+  # Required: no
+  # Default: custom
+  stack: custom
+
+commands:
+  # Required: no
+  # Default: ""
+  install: ""
+  # Required: no
+  # Default: ""
+  lint: ""
+  # Required: no
+  # Default: ""
+  test: ""
+  # Required: no
+  # Default: ""
+  build: ""
+
+ci:
+  # Required: no
+  # Default: true
+  run_lint: true
+  # Required: no
+  # Default: true
+  run_test: true
+  # Required: no
+  # Default: false
+  run_build: false
+
+cache:
+  # Required: no
+  # Default: false
+  enabled: false
+  # Required: no
+  # Default: ""
+  path: ""
+  # Required: no
+  # Default: ""
+  key: ""
+  # Required: no
+  # Default: ""
+  restore_keys: ""
+
+governance:
+  # Required: no
+  # Default: "main,develop,staging,dev"
+  exempt_branches: "main,develop,staging,dev"
+  # Required: no
+  # Default: "feature,feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert"
+  branch_types: "feature,feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert"
+  # Required: no
+  # Default: "feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert"
+  conventional_types: "feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert"
+
+automation:
+  # Required: no
+  # Default: true
+  auto_pr_enabled: true
+  # Required: no
+  # Default: main
+  auto_pr_base_branch: "main"
+  # Required: no
+  # Default: true
+  stale_enabled: true
+  # Required: no
+  # Default: 30
+  stale_days_before_stale: 30
+  # Required: no
+  # Default: 14
+  stale_days_before_close: 14
+  # Required: no
+  # Default: "pinned,security,never-stale"
+  stale_exempt_issue_labels: "pinned,security,never-stale"
+  # Required: no
+  # Default: "pinned,security,never-stale"
+  stale_exempt_pr_labels: "pinned,security,never-stale"

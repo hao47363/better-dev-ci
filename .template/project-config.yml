@@ -1,3 +1,7 @@
+# Legacy fallback config.
+# Prefer using `.template/repo-settings.yml` as the single source of truth.
+# This file is still read for backward compatibility.
+
 stack: custom
 
 # Stack presets (pick one and customize):

@@ -13,6 +13,16 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read governance settings
+        id: cfg
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "branch_types=$(sh ./scripts/get_config_value.sh governance.branch_types feature,feat,fix,chore,docs,refactor,test,perf,ci,build,style,revert)" >> "$GITHUB_OUTPUT"
+
       - name: Label by changed files
         uses: actions/labeler@v5
         with:
@@ -20,14 +30,18 @@ jobs:
 
       - name: Label by branch prefix
         uses: actions/github-script@v7
+        env:
+          ALLOWED_BRANCH_TYPES: ${{ steps.cfg.outputs.branch_types }}
         with:
           script: |
             const branch = context.payload.pull_request.head.ref;
             const prefix = branch.split('/')[0];
-            const allowed = new Set([
-              'feature', 'feat', 'fix', 'chore', 'docs',
-              'refactor', 'test', 'perf', 'ci', 'build', 'style', 'revert'
-            ]);
+            const allowed = new Set(
+              (process.env.ALLOWED_BRANCH_TYPES || '')
+                .split(',')
+                .map((s) => s.trim())
+                .filter(Boolean)
+            );
 
             if (!allowed.has(prefix)) return;
 
