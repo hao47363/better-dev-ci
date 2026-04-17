@@ -2,6 +2,24 @@
 
 A governance-first template system for framework projects that keeps application ownership at root while enforcing consistent engineering standards.
 
+<!-- Optional badges (replace when needed)
+[![CI](https://img.shields.io/github/actions/workflow/status/ORG/REPO/ci.yml?branch=main)](#)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue)](./governance/template-changelog.md)
+[![License](https://img.shields.io/badge/license-MIT-green)](#)
+-->
+
+## Navigation
+
+- [Quick start](#quick-start)
+- [Setup modes](#setup-modes)
+- [Stack behavior](#stack-behavior)
+- [Who should use this](#who-should-use-this)
+- [When not to use this](#when-not-to-use-this)
+- [Documentation map](#documentation-map)
+- [Required GitHub settings](#required-github-settings)
+- [Structure policy](#structure-policy)
+- [FAQ](#faq)
+
 ## What this includes
 
 - Branch naming, commit message, and PR title validation
@@ -12,6 +30,13 @@ A governance-first template system for framework projects that keeps application
 - Structured governance docs, release policy, and quality playbook
 
 This template intentionally avoids owning root `README.md` and `CHANGELOG.md` so framework-generated project files can remain the primary source of truth.
+
+## At a glance
+
+- **Framework ownership first**: application `README.md` and `CHANGELOG.md` stay project-owned.
+- **Governance by default**: CI, hooks, and conventions are ready out of the box.
+- **Minimal root coupling**: template assets live under `governance-pack/`.
+- **Stack-aware defaults**: Laravel, Next.js, Flutter, and Python supported.
 
 ## Quick start
 
@@ -77,18 +102,30 @@ lefthook install
 
 Any `commands.*` value you set manually overrides stack defaults.
 
+## Who should use this
+
+- Teams that want standardized Git workflow governance across multiple stacks
+- Projects that need repeatable CI + naming + review discipline
+- Repositories where framework/root files should remain owned by the app itself
+
+## When not to use this
+
+- Very small throwaway prototypes with no CI/governance needs
+- Repos where full custom workflow logic replaces all template governance
+- Teams that do not want enforced naming/commit/PR conventions
+
 ## Documentation map
 
-- Bootstrap and migration flow: `governance-pack/docs/operations/bootstrap-flow.md`
-- CI and DevX flow: `governance-pack/docs/operations/ci-devx-flow.md`
-- Configuration reference: `governance-pack/docs/reference/configuration-reference.md`
-- Naming conventions: `governance-pack/docs/governance/naming-conventions.md`
-- Linting strategy: `governance-pack/docs/governance/linting-strategy.md`
-- Code quality playbook: `governance-pack/docs/governance/code-quality-playbook.md`
-- Changelog guidelines: `governance-pack/docs/governance/changelog-guidelines.md`
-- Release/versioning policy: `governance-pack/docs/governance/release-versioning.md`
-- Community best-practice report: `governance-pack/docs/governance/community-best-practices-report.md`
-- Template changelog: `governance-pack/docs/governance/template-changelog.md`
+- [Bootstrap and migration flow](./operations/bootstrap-flow.md)
+- [CI and DevX flow](./operations/ci-devx-flow.md)
+- [Configuration reference](./reference/configuration-reference.md)
+- [Naming conventions](./governance/naming-conventions.md)
+- [Linting strategy](./governance/linting-strategy.md)
+- [Code quality playbook](./governance/code-quality-playbook.md)
+- [Changelog guidelines](./governance/changelog-guidelines.md)
+- [Release/versioning policy](./governance/release-versioning.md)
+- [Community best-practice report](./governance/community-best-practices-report.md)
+- [Template changelog](./governance/template-changelog.md)
 
 ## Required GitHub settings
 
@@ -101,3 +138,17 @@ Any `commands.*` value you set manually overrides stack defaults.
 - Keep root minimal and framework-owned where possible
 - Keep GitHub-native files under `.github/`
 - Keep template-owned docs/scripts/templates under `governance-pack/`
+
+## FAQ
+
+### Why is there no root `README.md` in this template?
+
+To allow framework-generated project `README.md` to become the default repository landing documentation.
+
+### Can I still customize commands?
+
+Yes. Set `project.stack` for defaults and override any `commands.*` key as needed.
+
+### Does this support custom stacks?
+
+Yes. Use `project.stack: custom` and define `commands.install`, `commands.lint`, `commands.test`, and `commands.build` explicitly.
