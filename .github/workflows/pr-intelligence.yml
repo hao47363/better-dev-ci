@@ -1,0 +1,42 @@
+name: PR Intelligence
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - ready_for_review
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-intelligence-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-intelligence:
+    name: PR Intelligence Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate PR report
+        env:
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: sh ./governance-pack/scripts/generate_pr_report.sh pr-report.md
+
+      - name: Upload PR report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-report-pr-${{ github.event.pull_request.number }}
+          path: pr-report.md
+          if-no-files-found: error
