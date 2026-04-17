@@ -109,7 +109,13 @@ jobs:
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
           else
-            RANGE="${{ github.event.before }}..${{ github.sha }}"
+            BEFORE_SHA="${{ github.event.before }}"
+            if [[ "$BEFORE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+              echo "Detected new-branch push event (before SHA is all zeros)."
+              RANGE="${{ github.sha }}"
+            else
+              RANGE="$BEFORE_SHA..${{ github.sha }}"
+            fi
           fi
           COMMITS=$(git rev-list "$RANGE")
           if [[ -z "$COMMITS" ]]; then
