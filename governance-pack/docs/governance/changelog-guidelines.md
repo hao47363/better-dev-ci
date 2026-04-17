@@ -8,7 +8,7 @@ This template uses:
 ## Rules
 
 - Keep changelog entries human-readable and curated (not raw git logs).
-- Maintain an `Unreleased` section at the top of `CHANGELOG.md`.
+- Maintain an `Unreleased` section at the top of `governance-pack/CHANGELOG.md`.
 - Group entries under standard sections:
   - `Added`
   - `Changed`
@@ -23,7 +23,7 @@ This template uses:
 
 ## Maintenance approach
 
-- Update `CHANGELOG.md` manually during feature/fix work.
+- Update `governance-pack/CHANGELOG.md` manually during feature/fix work.
 - Keep the top-level Keep a Changelog structure (`Unreleased` + sections) intact.
 - Before a release, review and curate entries for clarity and user impact.
 

@@ -4,7 +4,7 @@ A governance-first template system for framework projects that keeps application
 
 <!-- Optional badges (replace when needed)
 [![CI](https://img.shields.io/github/actions/workflow/status/ORG/REPO/ci.yml?branch=main)](#)
-[![Version](https://img.shields.io/badge/version-0.3.0-blue)](./governance/template-changelog.md)
+[![Version](https://img.shields.io/badge/version-0.4.0-blue)](../CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](#)
 -->
 
@@ -125,7 +125,7 @@ Any `commands.*` value you set manually overrides stack defaults.
 - [Changelog guidelines](./governance/changelog-guidelines.md)
 - [Release/versioning policy](./governance/release-versioning.md)
 - [Community best-practice report](./governance/community-best-practices-report.md)
-- [Template changelog](./governance/template-changelog.md)
+- [Template changelog](../CHANGELOG.md)
 
 ## Required GitHub settings
 
