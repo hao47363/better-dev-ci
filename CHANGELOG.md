@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
+- Improved push commit validation range in `.github/workflows/ci.yml` to use merge-base with default branch, preventing false failures on new-branch pushes and force-push updates.
+
 ### Security
 
 ## [0.1.0] - 2026-04-17
