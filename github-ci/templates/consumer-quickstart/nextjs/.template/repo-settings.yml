@@ -15,10 +15,9 @@ ci:
   run_test: true
   run_build: true
 
-# Optional GitHub Actions: copy thin callers from the tooling repo’s
-# `templates/consumer-quickstart/optional-workflows/` into `.github/workflows/`
-# in this repository (PR automation, stale, labeler, PR intelligence). Keys below
-# default to on (`true`); set a flag to `false` to disable that automation.
+# This quickstart includes thin callers for PR automation, stale,
+# labeler, and PR intelligence under `.github/workflows/`. Keys below default
+# to on (`true`); set a flag to `false` to disable that automation.
 
 governance:
   exempt_branches: "main,develop,staging,dev"

@@ -7,7 +7,8 @@ Each file is a **thin caller**: triggers live in your app repo; the job `uses:` 
 ## Setup
 
 1. Copy the YAML files you need into **`.github/workflows/`** in your app repo.
-2. Ensure **`.github/labeler.yml`** exists (or copy from this repo’s template) if you use the labeler caller.
+   - Note: all stack quickstarts already bundle these callers.
+2. Ensure **`.github/labeler.yml`** exists (quickstarts now include a starter; customize it for your repo) if you use the labeler caller.
 3. Tune flags in **`.github/repo-settings.yml`** (or your configured path). Defaults are **enabled** (`true`) unless you set them to `false`.
 
 ## Private tooling repository
