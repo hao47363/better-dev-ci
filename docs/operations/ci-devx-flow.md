@@ -33,7 +33,7 @@ This template is designed to stay language-agnostic while improving feedback spe
 
 ## PR Intelligence behavior
 
-- Script entrypoint: `sh ./scripts/generate_pr_report.sh pr-report.md`
+- Script entrypoint: `bash ./scripts/generate_pr_report.sh pr-report.md`
 - Stateless output: report is fully regenerated each run (overwrite semantics).
 - PR lifecycle safe: compares base branch to current PR HEAD using a merge-base-aware range (`base...head`), so reruns/new commits/rebase/force-push still produce valid current-state output.
 - Deterministic scoring: score and findings derive only from git diff metadata and file paths.

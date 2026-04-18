@@ -100,6 +100,7 @@ rsync -a \
   --exclude ".template" \
   --exclude "scripts" \
   --exclude "templates" \
+  --exclude "docs" \
   --exclude "lefthook.yml" \
   --exclude ".editorconfig" \
   "$INIT_TARGET_DIR"/ ./

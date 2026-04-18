@@ -32,7 +32,7 @@ if [ "$section" = "$query" ]; then
       value = substr($0, length(topkey) + 2)
       value = trim(value)
       if (value !~ /^"/) {
-        sub(/\s*#.*$/, "", value)
+        sub(/[[:space:]]*#[[:space:]]*.*$/, "", value)
         value = trim(value)
       }
       if (value ~ /^".*"$/) {
@@ -48,11 +48,6 @@ fi
 
 if ! printf '%s' "$query" | grep -Eq '^[^.]+\.[^.]+$'; then
   echo "read_project_config.sh: query must be exactly one dot with non-empty section and key (e.g. project.stack): $query" >&2
-  exit 1
-fi
-
-if [ -z "$key" ]; then
-  echo "read_project_config.sh: invalid query (empty key segment): $query" >&2
   exit 1
 fi
 
@@ -86,6 +81,10 @@ awk -v section="$section" -v key="$key" '
     value = line
     sub(/^[^:]+:[[:space:]]*/, "", value)
     value = trim(value)
+    if (value !~ /^"/) {
+      sub(/[[:space:]]*#[[:space:]]*.*$/, "", value)
+      value = trim(value)
+    }
     if (value ~ /^".*"$/) {
       sub(/^"/, "", value)
       sub(/"$/, "", value)
