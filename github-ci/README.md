@@ -36,6 +36,10 @@ Optional at scale: mint short-lived tokens with a **GitHub App** installation in
 
 After any change to reusable YAML, composite actions, `scripts/`, `templates/`, or `docs/`, tag a new release (or move `v1` deliberately) and communicate the upgrade path to application teams.
 
+## Copy-paste quick-starts (application repos)
+
+Ready-made **caller workflow + `repo-settings.yml`** pairs for **Next.js**, **Laravel**, **Flutter**, and **custom** live under [`templates/consumer-quickstart/`](templates/consumer-quickstart/README.md). Copy the two files from one subfolder into the app repository; preset stacks leave **`commands.*`** empty so stack defaults apply. See the same section in the monorepo [`README.md`](../README.md) for a short narrative.
+
 ## Default CI (project config)
 
 Keep `on:` triggers in the application repository; delegate `jobs` to this repository. With **`use_project_commands: true`** (the default), `scripts/run_project_checks.sh` resolves commands using **`.template/repo-settings.yml`** first, then **`.template/project-config.yml`** as a legacy fallback for missing keys, in the checked-out app (or from vendored `scripts/` / `templates/` symlinked from this tooling repository).

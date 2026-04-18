@@ -29,6 +29,7 @@ Maintainers refresh the published repo from here with [`scripts/sync-github-ci-m
 - **Governance in CI** — branch names, commit messages, and PR titles validated on GitHub.
 - **Configurable pipelines** — `install` / `lint` / `test` / `build` driven by [`.template/repo-settings.yml`](.template/repo-settings.yml) and [`scripts/run_project_checks.sh`](scripts/run_project_checks.sh) when `use_project_commands: true`, or explicit commands from the caller when `use_project_commands: false`.
 - **Stack presets** — sensible defaults for Laravel, Next.js, Flutter, and Python when command fields are left empty.
+- **Copy-paste starters** — [`templates/consumer-quickstart/`](templates/consumer-quickstart/README.md) provides ready-made `ci.yml` + `repo-settings.yml` pairs for common stacks.
 - **Optional extras** — PR automation, labeler, stale workflows (thin callers can point at the same tooling repo); [Lefthook](lefthook.yml) for optional local hooks (CI remains authoritative).
 - **Documentation** — release policy, linting strategy, naming conventions, and operations guides under [`docs/`](docs/).
 
@@ -41,6 +42,7 @@ Root [`CHANGELOG.md`](CHANGELOG.md) tracks this template and tooling. Each appli
 | I want to… | Start here |
 | --- | --- |
 | Wire a new app repo to central CI | [Set up CI on GitHub](#set-up-ci-on-github) |
+| Copy a ready-made `ci.yml` + `repo-settings.yml` for my stack | [Copy-paste quick-starts](#5-copy-paste-quick-starts-laravel-nextjs-flutter-custom) |
 | See workflow inputs and YAML knobs | [Configuration reference](docs/reference/configuration-reference.md) |
 | Understand org settings and tokens | [Centralized CI setup](docs/central-ci-setup.md) · [Consumer guide](github-ci/README.md) |
 | Browse governance and ops docs | [Documentation map](#documentation-map) |
@@ -137,7 +139,18 @@ jobs:
 
 Push to the default branch or open a PR; the **Actions** tab should show a **CI** run.
 
-### 5. Project configuration
+### 5. Copy-paste quick-starts (Laravel, Next.js, Flutter, custom)
+
+Under [`templates/consumer-quickstart/`](templates/consumer-quickstart/README.md) there are **drop-in pairs** for application repositories:
+
+- **`nextjs/`** — `runtime: node` in the workflow; empty **`commands.*`** use the **npm** stack preset (`npm ci`, `npm run lint`, …).
+- **`laravel/`** — `runtime: php`; empty **`commands.*`** use **Composer / Pint / Artisan** presets.
+- **`flutter/`** — `runtime: flutter`; empty **`commands.*`** use **Flutter** presets.
+- **`custom/`** — `runtime: none`; **`commands.*`** are filled with **example npm lines** you should replace for your stack.
+
+Copy each folder’s `.github/workflows/ci.yml` to **`.github/workflows/ci.yml`** and `.template/repo-settings.yml` to **`.template/repo-settings.yml`**. Keep **`uses:`** `@…` and **`tooling_ref`** on the **same tag or SHA**. Swap **`hao47363/better-dev-ci`** if your tooling repo differs.
+
+### 6. Project configuration
 
 With **`use_project_commands: true`** (the default), the reusable workflow reads **`.template/repo-settings.yml`**. See [Configuration reference](docs/reference/configuration-reference.md).
 
@@ -156,7 +169,7 @@ commands:
 
 Empty `commands.*` values use [stack defaults](#stack-defaults). Override any step with your own shell command.
 
-### 6. Verify
+### 7. Verify
 
 1. **Actions** shows the workflow.
 2. A push or PR runs **Prepare**, governance validation, then **Lint** / **Test** / **Build** as configured.

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- `templates/consumer-quickstart/{nextjs,laravel,flutter,custom}/` — copy-paste **`.github/workflows/ci.yml`** + **`.template/repo-settings.yml`** pairs for application repos using default project commands (`use_project_commands: true`).
 - `universal-ci` **Validate tooling inputs** step (non-empty `tooling_repository` / `tooling_ref`, `owner/repo` shape, reject `..` / stray slashes) so misconfiguration fails with a clear message before composite download.
 
 ### Changed

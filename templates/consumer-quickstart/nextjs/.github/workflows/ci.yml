@@ -1,0 +1,28 @@
+# Copy to: .github/workflows/ci.yml
+# Next.js: installs Node via universal-ci runtime; commands come from .template/repo-settings.yml (npm presets).
+
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  universal-ci:
+    uses: hao47363/better-dev-ci/.github/workflows/universal-ci.yml@v1
+    with:
+      tooling_repository: hao47363/better-dev-ci
+      tooling_ref: v1
+      tooling_auth_mode: none
+      runtime: node
+      # runtime_version: "20"
+    secrets: inherit
