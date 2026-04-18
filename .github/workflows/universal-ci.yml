@@ -249,7 +249,7 @@ jobs:
     needs:
       - prepare
       - validate-governance
-    if: ${{ needs.prepare.outputs.run_lint == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' }}
+    if: ${{ always() && needs.prepare.outputs.run_lint == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' && (github.event.pull_request.number == null || needs.validate-governance.result == 'success') }}
     steps:
       - name: Setup governance pack
         uses: hao47363/better-dev-ci/.github/actions/setup-governance-pack@stable
@@ -315,7 +315,7 @@ jobs:
     needs:
       - prepare
       - validate-governance
-    if: ${{ needs.prepare.outputs.run_test == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' }}
+    if: ${{ always() && needs.prepare.outputs.run_test == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' && (github.event.pull_request.number == null || needs.validate-governance.result == 'success') }}
     steps:
       - name: Setup governance pack
         uses: hao47363/better-dev-ci/.github/actions/setup-governance-pack@stable
@@ -381,7 +381,7 @@ jobs:
     needs:
       - prepare
       - validate-governance
-    if: ${{ needs.prepare.outputs.run_build == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' }}
+    if: ${{ always() && needs.prepare.outputs.run_build == 'true' && needs.prepare.outputs.run_heavy_checks == 'true' && (github.event.pull_request.number == null || needs.validate-governance.result == 'success') }}
     steps:
       - name: Setup governance pack
         uses: hao47363/better-dev-ci/.github/actions/setup-governance-pack@stable
