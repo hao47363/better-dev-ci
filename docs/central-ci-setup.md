@@ -8,12 +8,12 @@ The **setup-governance-pack** composite action:
 
 1. Checks out the **calling** (application) repository.
 2. Uses **vendored** root `scripts/` and `templates/` when `scripts/run_project_checks.sh` is already present.
-3. Otherwise checks out the central tooling repository named by the `tooling_repository` input (for example `example-org/github-ci`), then symlinks `scripts/` and `templates/` from that checkout into the workspace.
+3. Otherwise checks out the central tooling repository named by the `tooling_repository` input (for example `hao47363/better-dev-ci`), then symlinks `scripts/` and `templates/` from that checkout into the workspace.
 
 ## Where the “single update” lives
 
 - **In this monorepo** — Edit `universal-*.yml`, the composite action, or root `scripts/`, `templates/`, and `docs/`, then run `./scripts/sync-github-ci-mirror.sh` to refresh the publishable mirror in [`github-ci/`](../github-ci/).
-- **On GitHub** — Push the `github-ci/` mirror to your tooling repository (for example `example-org/github-ci`) and tag releases (`v1`, …). Application repositories pin `uses: …/universal-ci.yml@v1`.
+- **On GitHub** — Push the `github-ci/` mirror to your tooling repository (for example `hao47363/better-dev-ci`) and tag releases (`v1`, …). Application repositories pin `uses: …/universal-ci.yml@v1`.
 
 Full operational steps, org settings, secrets, versioning, and consumer YAML snippets are documented in the [Central tooling README](../github-ci/README.md).
 
@@ -22,7 +22,20 @@ Full operational steps, org settings, secrets, versioning, and consumer YAML sni
 | Repository layout | `uses:` line |
 | --- | --- |
 | Same repo as the reusable files (this template) | `./.github/workflows/universal-ci.yml` (same commit as the caller; best for PR validation) |
-| Minimal app repo with only thin workflows | `example-org/github-ci/.github/workflows/universal-ci.yml@v1` (or a commit SHA) |
+| Minimal app repo with only thin workflows | `hao47363/better-dev-ci/.github/workflows/universal-ci.yml@v1` (or a commit SHA) |
+
+## Cross-repo reusable workflow constraints
+
+When the application repository calls `uses: <tooling>/.github/workflows/universal-ci.yml@<ref>`:
+
+1. **Composites are loaded from `tooling_repository` @ `tooling_ref`.**  
+   GitHub resolves **`uses: ./…` only inside the caller repository** and **before** job steps run, so `universal-ci.yml` must reference `setup-governance-pack` and `setup-runtime` as **`owner/repo/.github/actions/<name>@ref`** (built from the same `tooling_repository` / `tooling_ref` inputs used to clone `scripts/` and `templates/`). A “checkout tooling into the workspace, then `uses: ./subdir/...`” pattern does **not** work for another repo’s composites.
+
+2. **`tooling_repository` must be the repo that actually contains** `.github/actions/setup-governance-pack`, `.github/actions/setup-runtime`, and (unless you vendor them in the app) root `scripts/` and `templates/`. Usually this is **identical** to the repository in the workflow `uses:` line.
+
+3. **`tooling_ref` must exist** on that repository (branch, tag, or full SHA). Keep it consistent with how you pin `universal-ci.yml` so composites and workflow YAML stay in lockstep.
+
+4. **Same-repository testing** (caller uses `./.github/workflows/universal-ci.yml` in this monorepo): pass `tooling_repository` and `tooling_ref` explicitly (for example the current repository and branch/SHA) so they are not confused with documentation placeholders.
 
 ## Explicit commands (language-agnostic)
 
@@ -46,10 +59,10 @@ permissions:
 
 jobs:
   ci:
-    uses: example-org/github-ci/.github/workflows/universal-ci.yml@v1
+    uses: hao47363/better-dev-ci/.github/workflows/universal-ci.yml@v1
     with:
       use_project_commands: false
-      tooling_repository: example-org/github-ci
+      tooling_repository: hao47363/better-dev-ci
       tooling_ref: v1
       tooling_auth_mode: none
       runtime: node

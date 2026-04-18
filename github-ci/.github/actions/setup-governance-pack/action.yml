@@ -10,11 +10,11 @@ inputs:
   tooling_repository:
     description: Repository that contains scripts/ and templates/ when they are not vendored in the app.
     required: false
-    default: Twiport/github-ci
+    default: hao47363/better-dev-ci
   tooling_ref:
     description: Git ref (branch or tag) for the tooling repository checkout.
     required: false
-    default: v1
+    default: main
   tooling_auth_mode:
     description: Use pat with tooling_token for private tooling repositories; use none for public tooling.
     required: false
@@ -31,8 +31,6 @@ runs:
       uses: actions/checkout@v4
       with:
         fetch-depth: ${{ inputs.fetch_depth }}
-        # Preserve sibling checkouts (e.g. universal-ci preloads composites under .gha-better-dev-ci-pack/).
-        clean: false
 
     - name: Detect local CI scripts
       id: gov

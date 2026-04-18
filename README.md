@@ -16,7 +16,7 @@ Centralized **GitHub Actions** workflows, scripts, and governance docs so many a
 | Layer | Role |
 | --- | --- |
 | **This repository** | Source of truth for workflows under `.github/`, composites, `scripts/`, `templates/`, and `docs/`. |
-| **[`github-ci/`](github-ci/) mirror** | Publishable tree you push to a dedicated tooling repo on GitHub (for example `example-org/github-ci`). |
+| **[`github-ci/`](github-ci/) mirror** | Publishable tree you push to a dedicated tooling repo on GitHub (for example `hao47363/better-dev-ci`). |
 | **Each application repo** | Declares `uses: …/universal-ci.yml@<tag-or-sha>` and adds `.template/repo-settings.yml`. |
 
 Maintainers refresh the published repo from here with [`scripts/sync-github-ci-mirror.sh`](scripts/sync-github-ci-mirror.sh), then tag releases (for example `v1`) for consumers to pin.
@@ -49,7 +49,7 @@ Root [`CHANGELOG.md`](CHANGELOG.md) tracks this template and tooling. Each appli
 
 ## Set up CI on GitHub
 
-Use a **placeholder** tooling repo name in the examples below: replace `example-org/github-ci` with your real **owner/repository** on GitHub.
+Examples assume the tooling repository is **`hao47363/better-dev-ci`**; if yours is different, replace **`hao47363`**, **`better-dev-ci`**, and the matching `tooling_repository` / `uses:` pins everywhere below.
 
 ### 1. Organization: allow reusable workflows
 
@@ -63,7 +63,7 @@ An organization owner (or admin) must allow application repositories to call wor
 
 ### 2. Tooling repository layout
 
-The published repo (for example **`example-org/github-ci`**) must include on its default branch:
+The published repo (for example **`hao47363/better-dev-ci`**) must include on its default branch:
 
 - `.github/workflows/universal-ci.yml`
 - Composite actions under `.github/actions/`
@@ -97,9 +97,9 @@ permissions:
 
 jobs:
   universal-ci:
-    uses: example-org/github-ci/.github/workflows/universal-ci.yml@v1
+    uses: hao47363/better-dev-ci/.github/workflows/universal-ci.yml@v1
     with:
-      tooling_repository: example-org/github-ci
+      tooling_repository: hao47363/better-dev-ci
       tooling_ref: v1
       tooling_auth_mode: none
     secrets: inherit
@@ -110,19 +110,26 @@ jobs:
 | Input | Purpose |
 | --- | --- |
 | `uses:` | Path to the reusable workflow on the **tooling** repo; `@v1` is a tag (use `@<full_sha>` for a fixed revision). |
-| `tooling_repository` | Repo that provides `scripts/` and `templates/` when they are not in the app checkout (usually the same as the workflow host). |
-| `tooling_ref` | Branch or tag to check out for that tooling repo. |
+| `tooling_repository` | Repo that hosts **`.github/actions/*`**, root **`scripts/`**, and **`templates/`** when they are not in the app checkout (almost always the **same** repo as the `uses:` workflow host). |
+| `tooling_ref` | Branch, tag, or SHA on that repo for both composite actions and script checkouts (keep aligned with how you pin `universal-ci.yml`). |
 | `tooling_auth_mode` | `none` if no PAT is needed; `pat` if the tooling repo is private (see below). |
 | `secrets: inherit` | Passes secrets into the reusable workflow (needed when using `GH_CI_REPO_TOKEN`). |
+
+**Cross-repo constraints (typical failures):**
+
+- **`tooling_repository` must contain the composites** (`setup-governance-pack`, `setup-runtime`) and the script tree. A checkout-only mirror without `.github/actions/` will fail when the job loads those actions.
+- **`tooling_ref` must exist** on that repository. If you pin `uses: …/universal-ci.yml@main`, pass `tooling_ref: main` (or the same SHA) so composites match the workflow revision you intend.
+- **Do not set `tooling_repository` to the application repo** unless you have copied `.github/actions/` and vendored `scripts/` there on purpose.
+- GitHub evaluates **`uses: ./…` against the caller workspace before steps run**, so this template references composites as **`owner/repo/.github/actions/…@ref`** via `tooling_repository` + `tooling_ref`; a prior checkout step cannot “materialize” local composites for another repo.
 
 **Private tooling repo** — Create a PAT with **Contents: Read** scoped to the tooling repo. In the application repo, add secret **`GH_CI_REPO_TOKEN`**, then set:
 
 ```yaml
 jobs:
   universal-ci:
-    uses: example-org/github-ci/.github/workflows/universal-ci.yml@v1
+    uses: hao47363/better-dev-ci/.github/workflows/universal-ci.yml@v1
     with:
-      tooling_repository: example-org/github-ci
+      tooling_repository: hao47363/better-dev-ci
       tooling_ref: v1
       tooling_auth_mode: pat
     secrets: inherit
@@ -257,3 +264,7 @@ Pin `uses: …/universal-ci.yml@<full_commit_sha>`, or move a floating tag like 
 ### What about custom stacks?
 
 **Yes.** Use `project.stack: custom` with explicit `commands.*`, or explicit-command mode with your own shell strings.
+
+### CI fails with “Can’t find `action.yml`” under my app repo path
+
+Cross-repo reusable workflows treat **`uses: ./…`** as paths **inside the application repository**, and they are evaluated **before** steps run—so composites cannot be “checked out first” into a subfolder of the app workspace. This template loads **`setup-governance-pack`** / **`setup-runtime`** from **`tooling_repository`** @ **`tooling_ref`** instead. Ensure those inputs match the repo that actually contains `.github/actions/*` and align **`tooling_ref`** with how you pin `universal-ci.yml`. See [Centralized CI setup](docs/central-ci-setup.md#cross-repo-reusable-workflow-constraints).

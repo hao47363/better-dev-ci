@@ -10,7 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+- `universal-ci` **Validate tooling inputs** step (non-empty `tooling_repository` / `tooling_ref`, `owner/repo` shape, reject `..` / stray slashes) so misconfiguration fails with a clear message before composite download.
+
 ### Changed
+
+- `tooling_repository` / `tooling_ref` defaults in `universal-ci.yml` and `setup-governance-pack` now use **`hao47363/better-dev-ci`** and **`main`** (maintainer default; production callers should still pass explicit values matching their published tooling repo and pin).
+- README, `docs/governance-pack-README.md`, and `docs/central-ci-setup.md`: document cross-repo composite constraints and `tooling_repository` requirements.
 
 ### Deprecated
 
@@ -24,12 +29,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Cross-repo `universal-ci` callers: GitHub resolves `uses: ./.github/actions/…` against the **caller** workspace, so jobs failed when the application repository did not contain `setup-governance-pack` / `setup-runtime`. Each job now checks out `inputs.tooling_repository` @ `inputs.tooling_ref` into `.gha-better-dev-ci-pack/` (with `github.token` or `GH_CI_REPO_TOKEN` when `tooling_auth_mode` is `pat`), then loads those composites from `./.gha-better-dev-ci-pack/.github/actions/…`.
-- `setup-governance-pack`: set `clean: false` on the application checkout so a preloaded `.gha-better-dev-ci-pack/` tree is not removed by `git clean` before `scripts/` and `templates/` symlinks are created.
+- Cross-repo `universal-ci` callers: `uses: ./.github/actions/…` is evaluated against the **caller** repository and **before** job steps run, so neither the original paths nor a “checkout tooling then `./.gha-better-dev-ci-pack/…`” sequence could supply `action.yml` on the runner. `setup-governance-pack` and `setup-runtime` are now referenced with `${{ format('{0}/.github/actions/<name>@{1}', inputs.tooling_repository, inputs.tooling_ref) }}` so GitHub loads those composites from the tooling repository (the same `inputs` used for the `scripts/` / `templates/` checkout inside the composite).
 
 ### Changed
 
-- README and governance-facing Markdown: clearer onboarding, neutral `example-org/github-ci` examples, and mirrored copies kept in sync (`docs/governance-pack-README.md`, `docs/central-ci-setup.md`, `docs/operations/ci-devx-flow.md`, `github-ci/README.md`).
+- README and governance-facing Markdown: clearer onboarding, neutral `hao47363/better-dev-ci` examples, and mirrored copies kept in sync (`docs/governance-pack-README.md`, `docs/central-ci-setup.md`, `docs/operations/ci-devx-flow.md`, `github-ci/README.md`).
 
 ## [0.5.0] - 2026-04-18
 
