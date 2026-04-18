@@ -71,7 +71,6 @@ run_default_init() {
 
 if [ -n "$CUSTOM_CMD" ]; then
   echo "Running custom init command for $STACK..."
-  export INIT_TARGET_DIR
   env INIT_TARGET_DIR="$INIT_TARGET_DIR" sh -c "$CUSTOM_CMD"
 else
   echo "Running default init command for $STACK..."

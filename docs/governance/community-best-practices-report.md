@@ -12,7 +12,7 @@ This report summarizes practical conventions commonly supported in engineering r
 - Additional references:
   - [Martin Fowler: Avoiding Repetition](https://www.martinfowler.com/ieeeSoftware/repetition.pdf)
   - [Atomic Design by Brad Frost](https://bradfrost.com/blog/post/atomic-web-design/)
-  - [Atomic Design methodology (book site)](https://atomicdesign.bradfrost.com/chapter-2/%E3%80%80)
+  - [Atomic Design methodology (book site)](https://atomicdesign.bradfrost.com/chapter-2/)
 
 ## Majority-supported conventions
 

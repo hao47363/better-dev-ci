@@ -16,6 +16,29 @@ hotspot_history_commits="$(read_cfg "pr_intelligence.hotspot_history_commits" "2
 hotspot_threshold="$(read_cfg "pr_intelligence.hotspot_threshold" "6")"
 ignore_patterns="$(read_cfg "pr_intelligence.ignore_patterns" "")"
 
+# pr_intelligence.* numeric knobs must be non-negative integers for git -n and shell arithmetic.
+validate_uint_cfg() {
+  _name="$1"
+  _val="$2"
+  _default="$3"
+  case "$_val" in
+    ''|*[!0-9]*)
+      if [ "$strict_mode" = "true" ]; then
+        echo "Error: ${_name} must be a non-negative integer; got '${_val}'." >&2
+        exit 1
+      fi
+      echo "Warning: ${_name} must be a non-negative integer; got '${_val}'. Using ${_default}." >&2
+      echo "$_default"
+      ;;
+    *)
+      printf '%s\n' "$_val"
+      ;;
+  esac
+}
+
+hotspot_history_commits="$(validate_uint_cfg "pr_intelligence.hotspot_history_commits" "$hotspot_history_commits" "200")"
+hotspot_threshold="$(validate_uint_cfg "pr_intelligence.hotspot_threshold" "$hotspot_threshold" "6")"
+
 if [ "$enabled" != "true" ]; then
   {
     echo "# PR Intelligence Report"

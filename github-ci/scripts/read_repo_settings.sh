@@ -6,7 +6,7 @@ cfg_file=".template/repo-settings.yml"
 query="${1:-}"
 
 if [ -z "$query" ]; then
-  echo "Usage: $0 <section.key>"
+  echo "Usage: $0 <section.key|top-level-key>"
   exit 1
 fi
 
@@ -17,8 +17,33 @@ fi
 section="${query%%.*}"
 key="${query#*.}"
 
-if [ "$section" = "$query" ] || [ -z "$key" ]; then
-  echo "Query must be in section.key format."
+# Plain keys (no dot): top-level "key: value" only (legacy parity with project-config).
+if [ "$section" = "$query" ]; then
+  awk -v topkey="$query" '
+    function trim(s) {
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
+      return s
+    }
+
+    /^[[:space:]]*#/ { next }
+    /^[[:space:]]*$/ { next }
+
+    substr($0, 1, length(topkey) + 1) == topkey ":" {
+      value = substr($0, length(topkey) + 2)
+      value = trim(value)
+      if (value ~ /^".*"$/) {
+        sub(/^"/, "", value)
+        sub(/"$/, "", value)
+      }
+      print value
+      exit 0
+    }
+  ' "$cfg_file"
+  exit 0
+fi
+
+if [ -z "$key" ]; then
+  echo "Query must be in section.key format when using a dot."
   exit 1
 fi
 

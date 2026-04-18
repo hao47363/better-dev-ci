@@ -146,6 +146,15 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: sh ./scripts/validate_pr_title.sh "$PR_TITLE"
 
+  check-changelog-parity:
+    name: Verify changelog mirror parity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compare CHANGELOG.md to github-ci mirror
+        run: sh ./scripts/verify_changelog_parity.sh
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
