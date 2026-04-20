@@ -20,4 +20,6 @@ jobs:
       tooling_repository: hao47363/better-dev-ci
       tooling_ref: stable
       tooling_auth_mode: none
-    secrets: inherit
+    secrets:
+      GH_AUTOMATION_TOKEN: ${{ secrets.GH_AUTOMATION_TOKEN }}
+      GH_CI_REPO_TOKEN: ${{ secrets.GH_CI_REPO_TOKEN }}
